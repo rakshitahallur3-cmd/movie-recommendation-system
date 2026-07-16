@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - Netflix Movie Recommendation</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+
+        <h1 class="logo">NETFLIX</h1>
+
+        <ul class="menu">
+
+            <li><a href="/">Home</a></li>
+            <li><a href="/movie">Movies</a></li>
+            <li><a href="/recommendation">Recommendations</a></li>
+            <li><a href="/watchlist">Watchlist</a></li>
+            <li><a href="/profile">Profile</a></li>
+
+            {% if session.get('user') %}
+
+                <li class="username">
+                    👤 {{ session['user'] }}
+                </li>
+
+                <li>
+                    <a href="/logout">Logout</a>
+                </li>
+
+            {% else %}
+
+                <li><a href="/login">Login</a></li>
+                <li><a href="/signup">Signup</a></li>
+
+            {% endif %}
+
+        </ul>
+
+    </nav>
+
+    <!-- Profile -->
+
+    <div class="profile-container">
+
+        <div class="profile-box">
+
+            <h1 style="font-size:70px;">👤</h1>
+
+            <h2>{{ username }}</h2>
+
+            {% if email %}
+                <p><strong>Email:</strong> {{ email }}</p>
+            {% endif %}
+
+            <p>Welcome to Netflix Movie Recommendation System.</p>
+
+            <br>
+
+            <a href="/">
+                <button class="play-btn">🏠 Home</button>
+            </a>
+
+            <br><br>
+
+            <a href="/movie">
+                <button class="play-btn">🎬 Movies</button>
+            </a>
+
+            <br><br>
+
+            <a href="/recommendation">
+                <button class="play-btn">⭐ Recommendations</button>
+            </a>
+
+            <br><br>
+
+            <a href="/watchlist">
+                <button class="play-btn">❤️ Watchlist</button>
+            </a>
+
+            <br><br>
+
+            <a href="/logout">
+                <button class="list-btn">🚪 Logout</button>
+            </a>
+
+        </div>
+
+    </div>
+
+    <!-- Footer -->
+
+    <footer>
+
+        <div class="footer-links">
+
+            <a href="#">About</a>
+
+            <a href="#">Contact</a>
+
+            <a href="#">Privacy Policy</a>
+
+            <a href="https://github.com" target="_blank">GitHub</a>
+
+            <a href="https://www.themoviedb.org/" target="_blank">TMDB API</a>
+
+        </div>
+
+        <p>© 2026 Netflix Movie Recommendation System</p>
+
+    </footer>
+
+</body>
+
+</html>

@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Recommendation System</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+
+        <h1 class="logo">NETFLIX</h1>
+
+        <ul class="menu">
+            <li><a href="/">Home</a></li>
+            <li><a href="/recommendation">Recommendations</a></li>
+
+            {% if session.get('user') %}
+                <li class="username">
+                    👤 {{ session['user'] }}
+                </li>
+
+                <li>
+                    <a href="/logout">Logout</a>
+                </li>
+            {% else %}
+                <li><a href="/login">Login</a></li>
+                <li><a href="/signup">Signup</a></li>
+            {% endif %}
+        </ul>
+
+    </nav>
+
+    <!-- Hero Banner -->
+
+    <section class="banner">
+
+        {% if session.get('user') %}
+            <h2>Welcome, {{ session['user'] }} 👋</h2>
+        {% endif %}
+
+        <h1>Movie Recommendation System</h1>
+
+        <p>
+            Search your favourite movie and get similar movie recommendations.
+        </p>
+
+    </section>
+
+    <!-- Search Box -->
+
+    <div class="search-box">
+
+        <form action="/recommendation" method="POST" onsubmit="showLoading()">
+
+    <input
+        type="text"
+        id="movieSearch"
+        name="movie"
+        placeholder="🔍 Search Movie"
+        list="movieList"
+        autocomplete="off"
+        required>
+
+    <datalist id="movieList">
+        {% for title in movie_titles %}
+        <option value="{{ title }}">
+        {% endfor %}
+    </datalist>
+
+    <button type="submit">
+        Recommend
+    </button>
+</form>
+<div id="loading" class="loading">
+    🎬 Loading recommendations...
+</div>
+</div>
+    <!-- Popular Movies -->
+
+<h2 class="section-title">
+    🔥 Trending Movies
+</h2>
+
+<p class="section-subtitle">
+    Discover the most popular movies from the TMDB 5000 Dataset.
+</p>
+<div class="movie-container">
+
+    {% for movie in movies %}
+
+    <div class="movie-card">
+
+        <img src="{{ movie.poster }}" alt="{{ movie.title }}">
+
+        <h3>{{ movie.title }}</h3>
+        <div class="movie-meta">
+            <span class="rating-badge">
+                ⭐ {{ movie.rating }}
+            </span>
+            <span class="release-date">
+                📅 {{ movie.release_date }}
+            </span>
+        </div>
+
+        <a href="/movie/{{ movie.movie_id }}" class="btn">
+    View Details
+</a>
+
+{% if movie.trailer %}
+<a href="{{ movie.trailer }}" target="_blank" class="btn trailer-btn">
+    ▶ Watch Trailer
+</a>
+{% endif %}
+
+{% if session.get('user') %}
+<a href="/add_watchlist/{{ movie.movie_id }}" class="btn watchlist-btn">
+    ❤️ Add to Watchlist
+</a>
+{% else %}
+<a href="/login" class="btn watchlist-btn">
+    ❤️ Login to Add
+</a>
+{% endif %}
+
+    </div>
+
+    {% endfor %}
+
+</div>
+
+    <!-- Recommendations -->
+
+    {% if recommendations %}
+
+<h2 style="text-align:center; margin-top:40px;">
+    Recommended Movies
+</h2>
+
+<div class="movie-container">
+
+    {% for movie in recommendations %}
+
+    <div class="movie-card">
+
+    <img src="{{ movie.poster }}" alt="{{ movie.title }}">
+     <h3>{{ movie.title }}</h3>
+
+<div class="movie-meta">
+    <span class="rating-badge">
+        ⭐ {{ movie.rating }}
+    </span>
+
+    <span class="release-date">
+        📅 {{ movie.release_date }}
+    </span>
+</div>
+
+    <div class="movie-buttons">
+
+    <a href="/movie/{{ movie.movie_id }}" class="btn details-btn">
+        View Details
+    </a>
+
+    {% if movie.trailer %}
+    <a href="{{ movie.trailer }}" target="_blank" class="btn trailer-btn">
+        ▶ Watch Trailer
+    </a>
+    {% endif %}
+
+    {% if session.get('user') %}
+    <a href="/add_watchlist/{{ movie.movie_id }}" class="btn watchlist-btn">
+        ❤️ Add to Watchlist
+    </a>
+    {% else %}
+    <a href="/login" class="btn watchlist-btn">
+        ❤️ Login to Add
+    </a>
+    {% endif %}
+
+</div>
+</div>
+
+    {% endfor %}
+
+</div>
+
+{% endif %}
+<!-- About Project -->
+<section class="about-section">
+
+    <h2>🎬 About This Project</h2>
+
+    <p>
+        This Movie Recommendation System is developed using
+        <b>Python</b>, <b>Flask</b>, <b>Machine Learning</b>,
+        <b>TMDB API</b>, <b>HTML</b>, <b>CSS</b>, and
+        <b>JavaScript</b>.
+    </p>
+
+    <p>
+        Users can search for movies, receive personalized recommendations,
+        watch trailers, save movies to their watchlist, and securely log in
+        using Email or Google Authentication.
+    </p>
+
+</section>
+<!-- Features Section -->
+
+<section class="features">
+
+    <h2>✨ Key Features</h2>
+
+    <div class="feature-container">
+
+        <div class="feature-card">
+            <h3>🎬 Movie Recommendations</h3>
+            <p>Get similar movie suggestions using Machine Learning.</p>
+        </div>
+
+        <div class="feature-card">
+            <h3>🔍 Smart Search</h3>
+            <p>Search movies quickly with autocomplete suggestions.</p>
+        </div>
+
+        <div class="feature-card">
+            <h3>▶ Watch Trailers</h3>
+            <p>Watch official trailers directly from TMDB and YouTube.</p>
+        </div>
+
+        <div class="feature-card">
+            <h3>❤️ Watchlist</h3>
+            <p>Save your favourite movies for later viewing.</p>
+        </div>
+
+        <div class="feature-card">
+            <h3>⭐ Movie Ratings</h3>
+            <p>View ratings, release dates and movie details instantly.</p>
+        </div>
+
+        <div class="feature-card">
+            <h3>🔐 Secure Login</h3>
+            <p>Login using Email or Google Authentication securely.</p>
+        </div>
+
+    </div>
+
+</section>
+
+    <!-- Footer -->
+
+    <footer>
+    <div class="footer-links">
+        <a href="#">About</a>
+        <a href="#">Contact</a>
+        <a href="#">Privacy Policy</a>
+
+        <!-- Social Links -->
+        <a href="https://github.com/yourusername" target="_blank">
+            🐙 GitHub
+        </a>
+
+        <a href="https://www.linkedin.com/in/yourprofile/" target="_blank">
+            💼 LinkedIn
+        </a>
+
+        <a href="mailto:yourmail@gmail.com">
+            📧 Email
+        </a>
+    </div>
+
+    <p>© 2026 Movie Recommendation System</p>
+</footer>
+<!-- Back to Top Button -->
+<a href="#" class="top-btn">⬆</a>
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+
+</body>
+
+</html>

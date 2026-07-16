@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up | Movie Recommendation System</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+
+<body>
+
+<div class="login-page">
+
+    <!-- Left Side -->
+    <div class="login-left">
+
+        <h1 class="logo">NETFLIX</h1>
+
+        <h2>Create Account 🎬</h2>
+
+        <p class="subtitle">
+            Create your account and start exploring thousands of movies.
+        </p>
+
+        {% if message %}
+        <div class="error-message">
+            {{ message }}
+        </div>
+        {% endif %}
+
+        <form action="/signup" method="POST">
+
+            <label>Username</label>
+
+            <input
+                type="text"
+                name="username"
+                placeholder="Enter your Username"
+                required>
+
+            <label>Email Address</label>
+
+            <input
+                type="email"
+                name="email"
+                placeholder="Enter your Email Address"
+                required>
+
+            <label>Password</label>
+
+            <input
+                type="password"
+                name="password"
+                placeholder="Enter your Password"
+                required>
+
+            <button type="submit" class="login-btn">
+                <i class="fa-solid fa-user-plus"></i>
+                Create Account
+            </button>
+
+        </form>
+
+        <div class="divider">
+            <span>OR</span>
+        </div>
+
+        <a href="/google" class="google-btn">
+            <i class="fab fa-google"></i>
+            Continue with Google
+        </a>
+
+        <p class="signup-text">
+            Already have an account?
+            <a href="/login">Login</a>
+        </p>
+
+        <a href="/" class="back-home">
+            <i class="fa-solid fa-house"></i>
+            Back to Home
+        </a>
+
+    </div>
+
+    <!-- Right Side -->
+    <div class="login-right">
+
+        <img src="{{ url_for('static', filename='images/login.png') }}"
+             alt="Signup Illustration">
+
+    </div>
+
+</div>
+
+<footer>
+
+    <div class="footer-links">
+
+        <a href="#">About</a>
+        <a href="#">Contact</a>
+        <a href="#">Privacy Policy</a>
+
+        <a href="https://github.com/yourusername" target="_blank">
+            <i class="fab fa-github"></i>
+            GitHub
+        </a>
+
+        <a href="https://www.linkedin.com/in/yourprofile/" target="_blank">
+            <i class="fab fa-linkedin"></i>
+            LinkedIn
+        </a>
+
+        <a href="mailto:yourmail@gmail.com">
+            <i class="fa-solid fa-envelope"></i>
+            Email
+        </a>
+
+    </div>
+
+    <p>© 2026 Movie Recommendation System. All Rights Reserved.</p>
+
+</footer>
+
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+
+</body>
+</html>

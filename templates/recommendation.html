@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Recommendation</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+<!-- ================= NAVBAR ================= -->
+
+<nav class="navbar">
+
+    <h1 class="logo">NETFLIX</h1>
+
+    <ul class="menu">
+
+        <li><a href="/">Home</a></li>
+        <li><a href="/recommendation">Recommendations</a></li>
+        <li><a href="/watchlist">Watchlist</a></li>
+        <li><a href="/profile">Profile</a></li>
+
+        {% if session.get('user') %}
+
+            <li class="username">
+                👤 {{ session['user'] }}
+            </li>
+
+            <li>
+                <a href="/logout">Logout</a>
+            </li>
+
+        {% else %}
+
+            <li><a href="/login">Login</a></li>
+            <li><a href="/signup">Signup</a></li>
+
+        {% endif %}
+
+    </ul>
+
+</nav>
+
+<!-- ================= RECOMMENDATION SECTION ================= -->
+
+<div class="recommend-page">
+
+    <h1 class="recommend-title">
+        🎬 MOVIE RECOMMENDATION SYSTEM
+    </h1>
+
+    <p class="recommend-subtitle">
+        Select a movie and get similar recommendations.
+    </p>
+
+    <form method="POST"
+          class="recommend-form"
+          onsubmit="showLoading()">
+
+        <select
+            name="movie"
+            class="movie-select"
+            required>
+
+            <option value="">🎥 Select a Movie</option>
+
+            {% for title in movie_titles %}
+
+            <option value="{{ title }}">
+                {{ title }}
+            </option>
+
+            {% endfor %}
+
+        </select>
+
+        <button
+            type="submit"
+            class="recommend-btn">
+
+            🔍 Recommend Movies
+
+        </button>
+
+    </form>
+
+    <!-- Loading -->
+
+    <div id="loading" class="loading">
+        🎬 Finding similar movies...
+    </div>
+
+    <!-- Error -->
+
+    {% if message %}
+
+    <div class="error-message">
+        {{ message }}
+    </div>
+
+    {% endif %}
+
+</div>
+
+<!-- ================= RECOMMENDED MOVIES ================= -->
+
+{% if recommendations %}
+
+<h2 class="section-title">
+
+    🎯 Recommended Movies
+
+</h2>
+
+<div class="movie-container">
+
+{% for movie in recommendations %}
+
+<div class="movie-card">
+
+    <img src="{{ movie.poster }}"
+         alt="{{ movie.title }}"
+         class="movie-poster">
+
+    <div class="movie-content">
+
+        <h3>{{ movie.title }}</h3>
+
+        <div class="movie-meta">
+
+            <span class="rating-badge">
+                ⭐ {{ movie.rating }}/10
+            </span>
+
+            <span class="release-date">
+                📅 {{ movie.release_date }}
+            </span>
+
+        </div>
+
+        <p class="overview">
+            {% if movie.overview %}
+                {{ movie.overview[:120] }}...
+            {% else %}
+                No overview available.
+            {% endif %}
+        </p>
+
+        <a href="/movie/{{ movie.movie_id }}"
+           class="btn details-btn">
+            🎬 View Details
+        </a>
+
+        {% if movie.trailer %}
+        <a href="{{ movie.trailer }}"
+           target="_blank"
+           class="btn trailer-btn">
+            ▶ Watch Trailer
+        </a>
+        {% endif %}
+
+        {% if session.get('user') %}
+        <a href="/add_watchlist/{{ movie.movie_id }}"
+           class="btn watchlist-btn">
+            ❤️ Add to Watchlist
+        </a>
+        {% else %}
+        <a href="/login"
+           class="btn watchlist-btn">
+            ❤️ Login to Add
+        </a>
+        {% endif %}
+
+    </div>
+
+</div>
+
+{% endfor %}
+
+</div>
+
+{% endif %}
+
+<!-- ================= BACK BUTTON ================= -->
+
+<div style="text-align:center; margin:40px;">
+
+    <a
+        href="/"
+        class="btn details-btn"
+        style="display:inline-block;width:auto;padding:12px 30px;">
+
+        ⬅ Back to Home
+
+    </a>
+
+</div>
+
+<!-- ================= FOOTER ================= -->
+
+<footer>
+
+    <div class="footer-links">
+
+        <a href="#">About</a>
+
+        <a href="#">Contact</a>
+
+        <a href="#">Privacy Policy</a>
+
+        <a href="https://github.com/yourusername" target="_blank">
+            GitHub
+        </a>
+
+        <a href="https://www.linkedin.com/in/yourprofile" target="_blank">
+            LinkedIn
+        </a>
+
+        <a href="mailto:yourmail@gmail.com">
+            Email
+        </a>
+
+    </div>
+
+    <p>
+
+        © 2026 Movie Recommendation System
+
+    </p>
+
+</footer>
+
+<!-- Back To Top -->
+
+<a href="#" class="top-btn">
+    ⬆
+</a>
+
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+
+</body>
+
+</html>
